@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Buddy - AI-Powered Learning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* ... (same CSS as before) ... */
+         :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4bb543;
+            --warning: #ffcc00;
+            --danger: #dc3545;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-theme {
+            --light: #121212;
+            --dark: #f8f9fa;
+            --light-gray: #2d2d2d;
+            --gray: #a0a0a0;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
+        .hero {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn-large {
+            padding: 12px 24px;
+            font-size: 1.1rem;
+        }
+
+        .features {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .dark-theme .feature-card {
+            background-color: var(--light-gray);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .dashboard {
+            padding: 2rem 0;
+            display: none;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .welcome-message i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        .dark-theme .stat-card {
+            background-color: var(--light-gray);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .progress-chart {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .dark-theme .progress-chart {
+            background-color: var(--light-gray);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tool-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .dark-theme .tool-card {
+            background-color: var(--light-gray);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .tool-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .tool-content {
+            margin-top: 1rem;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--gray);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+        }
+
+        .upload-area i {
+            font-size: 2rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .summary-output, .mcq-output {
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .community-post {
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-author {
+            font-weight: 600;
+        }
+
+        .post-date {
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 0.5rem;
+        }
+
+        .post-action {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .study-partner-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 1rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+        }
+
+        .partner-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .planner-container {
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+        }
+
+        .planner-day {
+            margin-bottom: 1.5rem;
+        }
+
+        .planner-day:last-child {
+            margin-bottom: 0;
+        }
+
+        .day-header {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .planner-task {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+        }
+
+        .task-time {
+            font-size: 0.8rem;
+            color: var(--gray);
+            min-width: 80px;
+        }
+
+        .pomodoro-timer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+        }
+
+        .timer-display {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            color: var(--primary);
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .motivation-quote {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            margin-top: 1.5rem;
+            font-style: italic;
+        }
+
+        .quote-text {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quote-author {
+            color: var(--gray);
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .material-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .dark-theme .material-card {
+            background-color: var(--light-gray);
+        }
+
+        .material-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .material-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .daily-report {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .dark-theme .daily-report {
+            background-color: var(--light-gray);
+        }
+
+        .report-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .report-stat {
+            text-align: center;
+            padding: 1rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .dark-theme .modal-content {
+            background-color: var(--light-gray);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            background-color: var(--light);
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .dark-theme .form-control {
+            background-color: var(--dark);
+            border-color: var(--gray);
+            color: var(--light);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notifications-panel {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 300px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1rem;
+            z-index: 10;
+        }
+
+        .dark-theme .notifications-panel {
+            background-color: var(--light-gray);
+        }
+
+        .notification-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .dark-theme footer {
+            background-color: #1a1a1a;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray);
+            color: var(--gray);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ... (same HTML structure as before) ... -->
+     <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Study Buddy</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">Login</button>
+                    <button class="btn btn-primary" id="registerBtn">Register</button>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="notification-bell" id="notificationBell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                        <div class="notifications-panel" id="notificationsPanel">
+                            <div class="notification-item">
+                                <strong>New MCQ set available</strong>
+                                <p>Your Physics MCQs are ready for practice.</p>
+                                <small>10 minutes ago</small>
+                            </div>
+                            <div class="notification-item">
+                                <strong>Study partner match</strong>
+                                <p>Alex is available to study Calculus.</p>
+                                <small>1 hour ago</small>
+                            </div>
+                            <div class="notification-item">
+                                <strong>Daily report ready</strong>
+                                <p>Check out your study progress for today.</p>
+                                <small>2 hours ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Your AI-Powered Learning Companion</h1>
+            <p>Study Buddy helps you learn smarter with AI-powered tools for summarization, practice, planning, and collaboration.</p>
+            <button class="btn btn-primary btn-large" id="getStartedBtn">Get Started Now</button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Powerful Features for Effective Learning</h2>
+                <p>Study Buddy combines AI technology with proven learning techniques to help you achieve your academic goals.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Notes Summarizer</h3>
+                    <p>Upload your notes in PDF or image format and get concise summaries to help you revise faster.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3>MCQ Generator</h3>
+                    <p>Generate practice questions from your study materials to test your knowledge.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Study Community</h3>
+                    <p>Ask questions, share knowledge, and collaborate with other students.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <h3>Study Partner Finder</h3>
+                    <p>Connect with peers who are studying the same subjects as you.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Progress Dashboard</h3>
+                    <p>Track your study habits, performance, and achievements over time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>AI Study Planner</h3>
+                    <p>Get personalized study schedules optimized for your learning goals.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard (Hidden by default) -->
+    <section class="dashboard" id="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <div class="welcome-message">
+                    <i class="fas fa-user-graduate"></i>
+                    <div>
+                        <h2>Welcome back, <span id="userName">Sarah</span>!</h2>
+                        <p>Ready to continue your learning journey?</p>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="dailyReportBtn">View Daily Report</button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">4h 32m</div>
+                    <div class="stat-label">Study Time Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">87%</div>
+                    <div class="stat-label">Today's Goal Achieved</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">MCQs Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Notes Summarized</div>
+                </div>
+            </div>
+
+            <div class="progress-chart">
+                <h3>Weekly Study Progress</h3>
+                <canvas id="progressChart" height="100"></canvas>
+            </div>
+
+            <div class="tools-grid">
+                <!-- Notes Summarizer -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <i class="fas fa-file-alt tool-icon"></i>
+                        <h3>Notes Summarizer</h3>
+                    </div>
+                    <p>Upload your notes and get a concise summary.</p>
+                    <div class="tool-content">
+                        <div class="upload-area" id="notesUploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload PDF or image files</p>
+                            <input type="file" id="notesFileInput" accept=".pdf,.jpg,.jpeg,.png" style="display: none;">
+                        </div>
+                        <button class="btn btn-primary" id="summarizeBtn" disabled>Summarize Notes</button>
+                        <div class="summary-output" id="summaryOutput">
+                            <p>Your notes summary will appear here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MCQ Generator -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <i class="fas fa-question-circle tool-icon"></i>
+                        <h3>MCQ Generator</h3>
+                    </div>
+                    <p>Generate practice questions from your materials.</p>
+                    <div class="tool-content">
+                        <div class="form-group">
+                            <label class="form-label" for="subjectSelect">Select Subject</label>
+                            <select class="form-control" id="subjectSelect">
+                                <option value="physics">Physics</option>
+                                <option value="math">Mathematics</option>
+                                <option value="chemistry">Chemistry</option>
+                                <option value="biology">Biology</option>
+                                <option value="history">History</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="generateMCQBtn">Generate MCQs</button>
+                        <div class="mcq-output" id="mcqOutput">
+                            <p>Your generated MCQs will appear here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Study Community -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <i class="fas fa-users tool-icon"></i>
+                        <h3>Study Community</h3>
+                    </div>
+                    <p>Ask questions and help others with their doubts.</p>
+                    <div class="tool-content">
+                        <div class="form-group">
+                            <textarea class="form-control" id="doubtInput" rows="3" placeholder="What's your doubt?"></textarea>
+                        </div>
+                        <button class="btn btn-primary" id="postDoubtBtn">Post Doubt</button>
+                        <div class="community-posts" id="communityPosts">
+                            <div class="community-post">
+                                <div class="post-header">
+                                    <span class="post-author">Alex Johnson</span>
+                                    <span class="post-date">2 hours ago</span>
+                                </div>
+                                <p>Can someone explain Newton's Third Law with a real-life example?</p>
+                                <div class="post-actions">
+                                    <button class="post-action"><i class="fas fa-reply"></i> Reply</button>
+                                    <button class="post-action"><i class="fas fa-thumbs-up"></i> Helpful</button>
+                                </div>
+                            </div>
+                            <div class="community-post">
+                                <div class="post-header">
+                                    <span class="post-author">Maria Garcia</span>
+                                    <span class="post-date">5 hours ago</span>
+                                </div>
+                                <p>I'm struggling with integration by parts. Any tips?</p>
+                                <div class="post-actions">
+                                    <button class="post-action"><i class="fas fa-reply"></i> Reply</button>
+                                    <button class="post-action"><i class="fas fa-thumbs-up"></i> Helpful</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Study Partner Finder -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <i class="fas fa-user-friends tool-icon"></i>
+                        <h3>Study Partner Finder</h3>
+                    </div>
+                    <p>Connect with students who share your interests.</p>
+                    <div class="tool-content">
+                        <div class="form-group">
+                            <label class="form-label" for="partnerSubject">Subject Interest</label>
+                            <select class="form-control" id="partnerSubject">
+                                <option value="physics">Physics</option>
+                                <option value="math">Mathematics</option>
+                                <option value="chemistry">Chemistry</option>
+                                <option value="biology">Biology</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="findPartnerBtn">Find Study Partners</button>
+                        <div class="partners-list" id="partnersList">
+                            <div class="study-partner-card">
+                                <div class="partner-avatar">MJ</div>
+                                <div>
+                                    <h4>Michael Jordan</h4>
+                                    <p>Physics • Available now</p>
+                                </div>
+                                <button class="btn btn-primary">Connect</button>
+                            </div>
+                            <div class="study-partner-card">
+                                <div class="partner-avatar">SD</div>
+                                <div>
+                                    <h4>Sarah Davis</h4>
+                                    <p>Mathematics • Available in 30 min</p>
+                                </div>
+                                <button class="btn btn-primary">Connect</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Study Planner -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <i class="fas fa-calendar-alt tool-icon"></i>
+                        <h3>AI Study Planner</h3>
+                    </div>
+                    <p>Get a personalized study schedule.</p>
+                    <div class="tool-content">
+                        <div class="form-group">
+                            <label class="form-label" for="plannerSubjects">Subjects</label>
+                            <input type="text" class="form-control" id="plannerSubjects" placeholder="e.g., Physics, Math, Chemistry">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="studyHours">Available Hours per Day</label>
+                            <input type="number" class="form-control" id="studyHours" value="4" min="1" max="12">
+                        </div>
+                        <button class="btn btn-primary" id="generatePlanBtn">Generate Plan</button>
+                        <div class="planner-container" id="plannerOutput">
+                            <p>Your personalized study plan will appear here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pomodoro Timer -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <i class="fas fa-clock tool-icon"></i>
+                        <h3>Pomodoro Timer</h3>
+                    </div>
+                    <p>Focus on your tasks with the Pomodoro technique.</p>
+                    <div class="tool-content">
+                        <div class="pomodoro-timer">
+                            <h4>Focus Time</h4>
+                            <div class="timer-display" id="timerDisplay">25:00</div>
+                            <div class="timer-controls">
+                                <button class="btn btn-primary" id="startTimerBtn">Start</button>
+                                <button class="btn btn-outline" id="pauseTimerBtn">Pause</button>
+                                <button class="btn btn-outline" id="resetTimerBtn">Reset</button>
+                            </div>
+                            <div class="session-count">
+                                <p>Session: <span id="sessionCount">1</span>/4</p>
+                            </div>
+                        </div>
+                        <div class="motivation-quote">
+                            <div class="quote-text" id="dailyQuote">"The secret of getting ahead is getting started."</div>
+                            <div class="quote-author">- Mark Twain</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Materials Section -->
+            <div class="tool-card" style="margin-top: 2rem;">
+                <div class="tool-header">
+                    <i class="fas fa-download tool-icon"></i>
+                    <h3>Study Materials</h3>
+                </div>
+                <p>Access and download study resources shared by the community.</p>
+                <div class="materials-grid">
+                    <div class="material-card">
+                        <div class="material-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h4>Physics Formulas</h4>
+                        <p>Complete formula sheet for mechanics</p>
+                        <button class="btn btn-primary" style="margin-top: 1rem;">Download</button>
+                    </div>
+                    <div class="material-card">
+                        <div class="material-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h4>Calculus Problems</h4>
+                        <p>Practice problems with solutions</p>
+                        <button class="btn btn-primary" style="margin-top: 1rem;">Download</button>
+                    </div>
+                    <div class="material-card">
+                        <div class="material-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h4>Chemistry Notes</h4>
+                        <p>Organic chemistry reactions</p>
+                        <button class="btn btn-primary" style="margin-top: 1rem;">Download</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Daily Report Modal -->
+    <div class="modal" id="dailyReportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Your Daily Study Report</h3>
+                <button class="close-modal" id="closeReportModal">&times;</button>
+            </div>
+            <div class="daily-report">
+                <h4>Tuesday, June 11</h4>
+                <div class="report-stats">
+                    <div class="report-stat">
+                        <div class="stat-value">4h 32m</div>
+                        <div class="stat-label">Total Study Time</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="stat-value">87%</div>
+                        <div class="stat-label">Goal Completion</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Subjects Covered</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">MCQs Attempted</div>
+                    </div>
+                </div>
+                <h5>Study Sessions</h5>
+                <ul>
+                    <li>Physics: 2h 15m (Quantum Mechanics)</li>
+                    <li>Mathematics: 1h 30m (Calculus)</li>
+                    <li>Chemistry: 47m (Organic Chemistry)</li>
+                </ul>
+                <h5>Recommendations</h5>
+                <p>You're doing great with Physics! Consider spending more time on Organic Chemistry tomorrow to balance your study schedule.</p>
+                <button class="btn btn-primary" style="margin-top: 1rem;">Export Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Login to Study Buddy</h3>
+                <button class="close-modal" id="closeLoginModal">&times;</button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="loginEmail">Email</label>
+                    <input type="email" class="form-control" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="loginPassword">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem;">Don't have an account? <a href="#" id="switchToRegister">Register here</a></p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create an Account</h3>
+                <button class="close-modal" id="closeRegisterModal">&times;</button>
+            </div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label class="form-label" for="registerName">Full Name</label>
+                    <input type="text" class="form-control" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="registerEmail">Email</label>
+                    <input type="email" class="form-control" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="registerPassword">Password</label>
+                    <input type="password" class="form-control" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="registerConfirmPassword">Confirm Password</label>
+                    <input type="password" class="form-control" id="registerConfirmPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem;">Already have an account? <a href="#" id="switchToLogin">Login here</a></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Study Buddy</h3>
+                    <p>Your AI-powered learning companion for effective and efficient studying.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect With Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Study Buddy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+     // Add this JavaScript to your existing HTML file, replacing the existing script
+
+// API Base URL
+const API_BASE_URL = 'http://localhost:5000/api';
+
+// Authentication state
+let currentUser = null;
+let authToken = localStorage.getItem('studyBuddyToken');
+
+// API Service
+const apiService = {
+  async request(endpoint, options = {}) {
+    const url = `${API_BASE_URL}${endpoint}`;
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+      ...options,
+    };
+
+    if (authToken) {
+      config.headers.Authorization = `Bearer ${authToken}`;
+    }
+
+    try {
+      const response = await fetch(url, config);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Something went wrong');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('API Error:', error);
+      throw error;
+    }
+  },
+
+  // Auth
+  async register(userData) {
+    return this.request('/register', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+    });
+  },
+
+  async login(credentials) {
+    return this.request('/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+    });
+  },
+
+  // Notes
+  async summarizeNotes(formData) {
+    const response = await fetch(`${API_BASE_URL}/summarize`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      },
+      body: formData,
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Something went wrong');
+    }
+    
+    return response.json();
+  },
+
+  // MCQs
+  async generateMCQs(data) {
+    return this.request('/generate-mcqs', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  // Study Planner
+  async generateStudyPlan(data) {
+    return this.request('/generate-study-plan', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  // Community
+  async getCommunityPosts() {
+    return this.request('/community/posts');
+  },
+
+  async createPost(postData) {
+    return this.request('/community/posts', {
+      method: 'POST',
+      body: JSON.stringify(postData),
+    });
+  },
+
+  // Study Partners
+  async getStudyPartners(subject) {
+    const query = subject ? `?subject=${encodeURIComponent(subject)}` : '';
+    return this.request(`/study-partners${query}`);
+  },
+
+  // Study Materials
+  async getStudyMaterials(subject) {
+    const query = subject ? `?subject=${encodeURIComponent(subject)}` : '';
+    return this.request(`/study-materials${query}`);
+  },
+
+  // Dashboard
+  async getDashboardStats() {
+    return this.request('/dashboard/stats');
+  },
+};
+
+// Utility Functions
+function connectWithPartner(partnerId) {
+  alert(`Connecting with partner ${partnerId}...`);
+  // In a real app, this would send a connection request
+}
+
+function downloadMaterial(fileUrl) {
+  window.open(`${API_BASE_URL}${fileUrl}`, '_blank');
+}
+
+function saveSummary() {
+  alert('Summary saved!');
+}
+
+// Initialize Progress Chart
+function initProgressChart() {
+  const ctx = document.getElementById('progressChart');
+  if (!ctx) return;
+  
+  const progressChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [{
+        label: 'Study Hours',
+        data: [3, 4.5, 2.5, 5, 4, 2, 1.5],
+        backgroundColor: '#4361ee',
+        borderColor: '#3a0ca3',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Hours'
+          }
+        }
+      }
+    }
+  });
+}
+
+// Updated Frontend Functions
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+
+  try {
+    const result = await apiService.login({ email, password });
+    authToken = result.token;
+    currentUser = result.user;
+    
+    localStorage.setItem('studyBuddyToken', authToken);
+    
+    // Show dashboard
+    document.querySelector('.hero').style.display = 'none';
+    document.querySelector('.features').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    
+    document.getElementById('userName').textContent = currentUser.name;
+    loginModal.style.display = 'none';
+    
+    // Load dashboard data
+    loadDashboardData();
+  } catch (error) {
+    alert('Login failed: ' + error.message);
+  }
+}
+
+async function handleRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('registerName').value;
+  const email = document.getElementById('registerEmail').value;
+  const password = document.getElementById('registerPassword').value;
+  const confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+  if (password !== confirmPassword) {
+    alert('Passwords do not match');
+    return;
+  }
+
+  try {
+    const result = await apiService.register({ name, email, password });
+    authToken = result.token;
+    currentUser = result.user;
+    
+    localStorage.setItem('studyBuddyToken', authToken);
+    
+    // Show dashboard
+    document.querySelector('.hero').style.display = 'none';
+    document.querySelector('.features').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    
+    document.getElementById('userName').textContent = currentUser.name;
+    registerModal.style.display = 'none';
+    
+    // Load dashboard data
+    loadDashboardData();
+  } catch (error) {
+    alert('Registration failed: ' + error.message);
+  }
+}
+
+async function loadDashboardData() {
+  try {
+    const stats = await apiService.getDashboardStats();
+    updateDashboardStats(stats);
+    
+    const posts = await apiService.getCommunityPosts();
+    updateCommunityPosts(posts);
+    
+    const materials = await apiService.getStudyMaterials();
+    updateStudyMaterials(materials);
+  } catch (error) {
+    console.error('Error loading dashboard data:', error);
+    // Use sample data if API is not available
+    updateDashboardStats({
+      weeklyStats: {
+        totalStudyTime: 272,
+        sessionsCount: 8,
+        subjectsStudied: 3,
+        goalCompletion: 87
+      }
+    });
+  }
+}
+
+function updateDashboardStats(stats) {
+  // Update stat cards
+  const statCards = document.querySelectorAll('.stat-card');
+  if (statCards.length >= 4) {
+    statCards[0].querySelector('.stat-value').textContent = 
+      `${Math.floor(stats.weeklyStats.totalStudyTime / 60)}h ${stats.weeklyStats.totalStudyTime % 60}m`;
+    statCards[1].querySelector('.stat-value').textContent = 
+      `${Math.round(stats.weeklyStats.goalCompletion)}%`;
+    statCards[2].querySelector('.stat-value').textContent = 
+      stats.weeklyStats.sessionsCount;
+    statCards[3].querySelector('.stat-value').textContent = 
+      stats.weeklyStats.subjectsStudied;
+  }
+}
+
+// Update Notes Summarizer
+function setupNotesSummarizer() {
+  const notesUploadArea = document.getElementById('notesUploadArea');
+  const notesFileInput = document.getElementById('notesFileInput');
+  const summarizeBtn = document.getElementById('summarizeBtn');
+  const summaryOutput = document.getElementById('summaryOutput');
+
+  if (!notesUploadArea || !summarizeBtn) return;
+
+  notesUploadArea.addEventListener('click', () => {
+    notesFileInput.click();
+  });
+
+  notesFileInput.addEventListener('change', () => {
+    if (notesFileInput.files.length > 0) {
+      notesUploadArea.innerHTML = `<i class="fas fa-file"></i><p>${notesFileInput.files[0].name}</p>`;
+      summarizeBtn.disabled = false;
+    }
+  });
+
+  summarizeBtn.addEventListener('click', async () => {
+    const file = notesFileInput.files[0];
+    if (!file) {
+      alert('Please select a file first');
+      return;
+    }
+
+    summaryOutput.innerHTML = '<p>Summarizing your notes... <i class="fas fa-spinner fa-spin"></i></p>';
+    
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const result = await apiService.summarizeNotes(formData);
+      summaryOutput.innerHTML = `
+        <h4>Summary</h4>
+        <p>${result.summary}</p>
+        <div class="summary-actions">
+          <button class="btn btn-primary" onclick="saveSummary()">
+            <i class="fas fa-save"></i> Save Summary
+          </button>
+        </div>
+      `;
+    } catch (error) {
+      summaryOutput.innerHTML = `<p>Note: Backend integration required for full functionality. Here's a sample summary:</p>
+        <p>This is a sample summary of your uploaded notes. The AI would analyze the content and provide key points, main ideas, and important concepts in a condensed format to help you study more efficiently.</p>`;
+    }
+  });
+}
+
+// Update MCQ Generator
+function setupMCQGenerator() {
+  const generateMCQBtn = document.getElementById('generateMCQBtn');
+  const mcqOutput = document.getElementById('mcqOutput');
+
+  if (!generateMCQBtn) return;
+
+  generateMCQBtn.addEventListener('click', async () => {
+    const subject = document.getElementById('subjectSelect').value;
+    
+    mcqOutput.innerHTML = '<p>Generating MCQs... <i class="fas fa-spinner fa-spin"></i></p>';
+    
+    try {
+      const result = await apiService.generateMCQs({
+        subject: subject,
+        topic: `Advanced ${subject} concepts`,
+        count: 5
+      });
+      
+      let mcqHTML = `<h4>${subject.charAt(0).toUpperCase() + subject.slice(1)} MCQs</h4>`;
+      result.mcqs.forEach((mcq, index) => {
+        mcqHTML += `
+          <div class="mcq-item">
+            <p><strong>${index + 1}. ${mcq.question}</strong></p>
+            <ul>
+              ${mcq.options.map((option, optIndex) => 
+                `<li>${String.fromCharCode(65 + optIndex)}) ${option}</li>`
+              ).join('')}
+            </ul>
+            <p><strong>Answer: ${String.fromCharCode(65 + mcq.correctAnswer)}) ${mcq.options[mcq.correctAnswer]}</strong></p>
+            ${mcq.explanation ? `<p><em>Explanation: ${mcq.explanation}</em></p>` : ''}
+          </div>
+        `;
+      });
+      
+      mcqOutput.innerHTML = mcqHTML;
+    } catch (error) {
+      mcqOutput.innerHTML = `<p>Note: Backend integration required. Sample MCQs:</p>
+        <div class="mcq-item">
+          <p><strong>1. What is the SI unit of force?</strong></p>
+          <ul>
+            <li>A) Joule</li>
+            <li>B) Newton</li>
+            <li>C) Watt</li>
+            <li>D) Pascal</li>
+          </ul>
+          <p><strong>Answer: B) Newton</strong></p>
+        </div>`;
+    }
+  });
+}
+
+// Update Study Planner
+function setupStudyPlanner() {
+  const generatePlanBtn = document.getElementById('generatePlanBtn');
+  const plannerOutput = document.getElementById('plannerOutput');
+
+  if (!generatePlanBtn) return;
+
+  generatePlanBtn.addEventListener('click', async () => {
+    const subjects = document.getElementById('plannerSubjects').value.split(',').map(s => s.trim());
+    const hours = document.getElementById('studyHours').value;
+    
+    if (subjects.length === 0 || !hours) {
+      alert('Please enter subjects and study hours');
+      return;
+    }
+    
+    plannerOutput.innerHTML = '<p>Generating your study plan... <i class="fas fa-spinner fa-spin"></i></p>';
+    
+    try {
+      const result = await apiService.generateStudyPlan({
+        subjects,
+        hoursPerDay: hours,
+        days: 7
+      });
+      
+      let plannerHTML = '';
+      if (result.studyPlan && result.studyPlan.days) {
+        result.studyPlan.days.forEach(day => {
+          plannerHTML += `
+            <div class="planner-day">
+              <div class="day-header">${day.day}</div>
+              ${day.sessions ? day.sessions.map(session => `
+                <div class="planner-task">
+                  <input type="checkbox" class="task-checkbox">
+                  <span class="task-time">${session.time}</span>
+                  <span>${session.subject}: ${session.topic}</span>
+                </div>
+              `).join('') : '<p>No sessions scheduled</p>'}
+            </div>
+          `;
+        });
+      } else {
+        plannerHTML = '<p>Generated study plan will appear here. For now, using sample data.</p>';
+      }
+      
+      plannerOutput.innerHTML = plannerHTML;
+    } catch (error) {
+      plannerOutput.innerHTML = `<p>Note: AI features require backend integration. Sample study plan:</p>
+        <div class="planner-day">
+          <div class="day-header">Monday</div>
+          <div class="planner-task">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-time">9:00 - 10:30</span>
+            <span>${subjects[0] || 'Physics'}: Core Concepts</span>
+          </div>
+          <div class="planner-task">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-time">14:00 - 15:30</span>
+            <span>${subjects[1] || 'Mathematics'}: Practice Problems</span>
+          </div>
+        </div>`;
+    }
+  });
+}
+
+// Update Community Posts
+async function updateCommunityPosts(postsData) {
+  const communityPosts = document.getElementById('communityPosts');
+  if (!communityPosts) return;
+  
+  let postsHTML = '';
+  
+  if (postsData.posts && postsData.posts.length > 0) {
+    postsData.posts.forEach(post => {
+      postsHTML += `
+        <div class="community-post">
+          <div class="post-header">
+            <span class="post-author">${post.userId?.name || 'User'}</span>
+            <span class="post-date">${new Date(post.createdAt).toLocaleDateString()}</span>
+          </div>
+          <p>${post.content}</p>
+          <div class="post-subject">Subject: ${post.subject || 'General'}</div>
+          <div class="post-actions">
+            <button class="post-action"><i class="fas fa-reply"></i> Reply</button>
+            <button class="post-action"><i class="fas fa-thumbs-up"></i> Helpful</button>
+          </div>
+          ${post.replies && post.replies.length > 0 ? `
+            <div class="replies">
+              ${post.replies.map(reply => `
+                <div class="reply">
+                  <strong>${reply.userId?.name || 'User'}:</strong> ${reply.content}
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    });
+  } else {
+    postsHTML = '<p>No community posts yet. Be the first to post!</p>';
+  }
+  
+  communityPosts.innerHTML = postsHTML;
+}
+
+function setupCommunity() {
+  const postDoubtBtn = document.getElementById('postDoubtBtn');
+  const doubtInput = document.getElementById('doubtInput');
+
+  if (!postDoubtBtn) return;
+
+  postDoubtBtn.addEventListener('click', async () => {
+    const content = doubtInput.value.trim();
+    const subject = document.getElementById('partnerSubject').value;
+    
+    if (!content) {
+      alert('Please enter your doubt');
+      return;
+    }
+    
+    try {
+      await apiService.createPost({ content, subject });
+      doubtInput.value = '';
+      // Refresh posts
+      const posts = await apiService.getCommunityPosts();
+      updateCommunityPosts(posts);
+    } catch (error) {
+      // Add the post locally for demo
+      const communityPosts = document.getElementById('communityPosts');
+      const newPostHTML = `
+        <div class="community-post">
+          <div class="post-header">
+            <span class="post-author">You</span>
+            <span class="post-date">Just now</span>
+          </div>
+          <p>${content}</p>
+          <div class="post-subject">Subject: ${subject}</div>
+          <div class="post-actions">
+            <button class="post-action"><i class="fas fa-reply"></i> Reply</button>
+            <button class="post-action"><i class="fas fa-thumbs-up"></i> Helpful</button>
+          </div>
+        </div>
+      `;
+      communityPosts.innerHTML = newPostHTML + communityPosts.innerHTML;
+      doubtInput.value = '';
+    }
+  });
+}
+
+// Update Study Partner Finder
+function setupStudyPartnerFinder() {
+  const findPartnerBtn = document.getElementById('findPartnerBtn');
+
+  if (!findPartnerBtn) return;
+
+  findPartnerBtn.addEventListener('click', async () => {
+    const subject = document.getElementById('partnerSubject').value;
+    
+    try {
+      const result = await apiService.getStudyPartners(subject);
+      updateStudyPartners(result.partners);
+    } catch (error) {
+      console.error('Error finding study partners:', error);
+      // Show sample partners
+      updateStudyPartners([
+        {
+          userId: { _id: '1', name: 'Alex Johnson', email: 'alex@example.com' },
+          subjects: [subject || 'Physics'],
+          availability: ['Weekdays 2-5 PM'],
+          bio: 'Looking for study partners for advanced physics'
+        },
+        {
+          userId: { _id: '2', name: 'Sarah Chen', email: 'sarah@example.com' },
+          subjects: [subject || 'Mathematics'],
+          availability: ['Weekends 10 AM-2 PM'],
+          bio: 'Mathematics major, good with calculus'
+        }
+      ]);
+    }
+  });
+}
+
+function updateStudyPartners(partners) {
+  const partnersList = document.getElementById('partnersList');
+  if (!partnersList) return;
+  
+  let partnersHTML = '';
+  
+  if (partners && partners.length > 0) {
+    partners.forEach(partner => {
+      partnersHTML += `
+        <div class="study-partner-card">
+          <div class="partner-avatar">${partner.userId.name.charAt(0)}</div>
+          <div>
+            <h4>${partner.userId.name}</h4>
+            <p>${partner.subjects.join(', ')} • ${partner.availability.join(', ')}</p>
+            ${partner.bio ? `<p class="partner-bio">${partner.bio}</p>` : ''}
+          </div>
+          <button class="btn btn-primary" onclick="connectWithPartner('${partner.userId._id}')">
+            Connect
+          </button>
+        </div>
+      `;
+    });
+  } else {
+    partnersHTML = '<p>No study partners found for this subject. Try a different subject or check back later.</p>';
+  }
+  
+  partnersList.innerHTML = partnersHTML;
+}
+
+// Update Study Materials
+async function updateStudyMaterials(materialsData) {
+  const materialsGrid = document.querySelector('.materials-grid');
+  if (!materialsGrid) return;
+  
+  let materialsHTML = '';
+  
+  if (materialsData.materials && materialsData.materials.length > 0) {
+    materialsData.materials.forEach(material => {
+      materialsHTML += `
+        <div class="material-card">
+          <div class="material-icon">
+            <i class="fas fa-file-pdf"></i>
+          </div>
+          <h4>${material.title}</h4>
+          <p>${material.description}</p>
+          <div class="material-meta">
+            <span>By: ${material.userId?.name || 'Unknown'}</span>
+            <span>Downloads: ${material.downloads || 0}</span>
+          </div>
+          <button class="btn btn-primary" onclick="downloadMaterial('${material.fileUrl}')" style="margin-top: 1rem;">
+            Download
+          </button>
+        </div>
+      `;
+    });
+  } else {
+    // Sample materials
+    materialsHTML = `
+      <div class="material-card">
+        <div class="material-icon">
+          <i class="fas fa-file-pdf"></i>
+        </div>
+        <h4>Physics Formula Sheet</h4>
+        <p>Complete formula sheet for mechanics and thermodynamics</p>
+        <button class="btn btn-primary" style="margin-top: 1rem;">Download</button>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">
+          <i class="fas fa-file-pdf"></i>
+        </div>
+        <h4>Calculus Problems</h4>
+        <p>Practice problems with step-by-step solutions</p>
+        <button class="btn btn-primary" style="margin-top: 1rem;">Download</button>
+      </div>
+    `;
+  }
+  
+  materialsGrid.innerHTML = materialsHTML;
+}
+
+// Pomodoro Timer
+function setupPomodoroTimer() {
+  const timerDisplay = document.getElementById('timerDisplay');
+  const startTimerBtn = document.getElementById('startTimerBtn');
+  const pauseTimerBtn = document.getElementById('pauseTimerBtn');
+  const resetTimerBtn = document.getElementById('resetTimerBtn');
+  const sessionCount = document.getElementById('sessionCount');
+
+  if (!timerDisplay || !startTimerBtn) return;
+
+  let timer;
+  let timeLeft = 25 * 60; // 25 minutes in seconds
+  let isRunning = false;
+  let sessions = 1;
+  
+  function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+  
+  startTimerBtn.addEventListener('click', () => {
+    if (!isRunning) {
+      isRunning = true;
+      timer = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+        
+        if (timeLeft === 0) {
+          clearInterval(timer);
+          isRunning = false;
+          alert('Pomodoro session completed! Take a 5-minute break.');
+          sessions++;
+          sessionCount.textContent = sessions;
+          
+          if (sessions <= 4) {
+            timeLeft = 25 * 60;
+            updateTimerDisplay();
+          }
+        }
+      }, 1000);
+    }
+  });
+  
+  pauseTimerBtn.addEventListener('click', () => {
+    if (isRunning) {
+      clearInterval(timer);
+      isRunning = false;
+    }
+  });
+  
+  resetTimerBtn.addEventListener('click', () => {
+    clearInterval(timer);
+    isRunning = false;
+    timeLeft = 25 * 60;
+    sessions = 1;
+    sessionCount.textContent = sessions;
+    updateTimerDisplay();
+  });
+  
+  updateTimerDisplay();
+}
+
+// Theme Toggle
+function setupThemeToggle() {
+  const themeToggle = document.getElementById('themeToggle');
+  if (!themeToggle) return;
+
+  const themeIcon = themeToggle.querySelector('i');
+  
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-theme');
+    if (document.body.classList.contains('dark-theme')) {
+      themeIcon.classList.remove('fa-moon');
+      themeIcon.classList.add('fa-sun');
+    } else {
+      themeIcon.classList.remove('fa-sun');
+      themeIcon.classList.add('fa-moon');
+    }
+  });
+}
+
+// Notifications
+function setupNotifications() {
+  const notificationBell = document.getElementById('notificationBell');
+  const notificationsPanel = document.getElementById('notificationsPanel');
+
+  if (!notificationBell) return;
+
+  notificationBell.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (notificationsPanel) {
+      notificationsPanel.style.display = notificationsPanel.style.display === 'block' ? 'none' : 'block';
+    }
+  });
+  
+  document.addEventListener('click', () => {
+    if (notificationsPanel) {
+      notificationsPanel.style.display = 'none';
+    }
+  });
+}
+
+// Modal Controls
+function setupModals() {
+  const loginBtn = document.getElementById('loginBtn');
+  const registerBtn = document.getElementById('registerBtn');
+  const getStartedBtn = document.getElementById('getStartedBtn');
+  const loginModal = document.getElementById('loginModal');
+  const registerModal = document.getElementById('registerModal');
+  const closeLoginModal = document.getElementById('closeLoginModal');
+  const closeRegisterModal = document.getElementById('closeRegisterModal');
+  const switchToRegister = document.getElementById('switchToRegister');
+  const switchToLogin = document.getElementById('switchToLogin');
+  const dailyReportBtn = document.getElementById('dailyReportBtn');
+  const dailyReportModal = document.getElementById('dailyReportModal');
+  const closeReportModal = document.getElementById('closeReportModal');
+
+  // Login Modal
+  if (loginBtn) {
+    loginBtn.addEventListener('click', () => {
+      if (loginModal) loginModal.style.display = 'flex';
+    });
+  }
+
+  if (closeLoginModal) {
+    closeLoginModal.addEventListener('click', () => {
+      if (loginModal) loginModal.style.display = 'none';
+    });
+  }
+
+  // Register Modal
+  if (registerBtn) {
+    registerBtn.addEventListener('click', () => {
+      if (registerModal) registerModal.style.display = 'flex';
+    });
+  }
+
+  if (getStartedBtn) {
+    getStartedBtn.addEventListener('click', () => {
+      if (registerModal) registerModal.style.display = 'flex';
+    });
+  }
+
+  if (closeRegisterModal) {
+    closeRegisterModal.addEventListener('click', () => {
+      if (registerModal) registerModal.style.display = 'none';
+    });
+  }
+
+  // Modal switches
+  if (switchToRegister) {
+    switchToRegister.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (loginModal) loginModal.style.display = 'none';
+      if (registerModal) registerModal.style.display = 'flex';
+    });
+  }
+
+  if (switchToLogin) {
+    switchToLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (registerModal) registerModal.style.display = 'none';
+      if (loginModal) loginModal.style.display = 'flex';
+    });
+  }
+
+  // Daily Report Modal
+  if (dailyReportBtn) {
+    dailyReportBtn.addEventListener('click', () => {
+      if (dailyReportModal) dailyReportModal.style.display = 'flex';
+    });
+  }
+
+  if (closeReportModal) {
+    closeReportModal.addEventListener('click', () => {
+      if (dailyReportModal) dailyReportModal.style.display = 'none';
+    });
+  }
+
+  // Close modals when clicking outside
+  window.addEventListener('click', (e) => {
+    if (loginModal && e.target === loginModal) {
+      loginModal.style.display = 'none';
+    }
+    if (registerModal && e.target === registerModal) {
+      registerModal.style.display = 'none';
+    }
+    if (dailyReportModal && e.target === dailyReportModal) {
+      dailyReportModal.style.display = 'none';
+    }
+  });
+}
+
+// Daily Motivation Quotes
+function setupMotivationQuotes() {
+  const quotes = [
+    { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+    { text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela" },
+    { text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. King" },
+    { text: "Don't let what you cannot do interfere with what you can do.", author: "John Wooden" },
+    { text: "Success is the sum of small efforts, repeated day in and day out.", author: "Robert Collier" }
+  ];
+  
+  const dailyQuote = document.getElementById('dailyQuote');
+  const quoteAuthor = document.querySelector('.quote-author');
+  
+  if (dailyQuote && quoteAuthor) {
+    // Show a random quote
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    dailyQuote.textContent = `"${randomQuote.text}"`;
+    quoteAuthor.textContent = `- ${randomQuote.author}`;
+  }
+}
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  // Setup all components
+  setupThemeToggle();
+  setupNotifications();
+  setupModals();
+  setupNotesSummarizer();
+  setupMCQGenerator();
+  setupStudyPlanner();
+  setupCommunity();
+  setupStudyPartnerFinder();
+  setupPomodoroTimer();
+  setupMotivationQuotes();
+  
+  // Initialize progress chart
+  initProgressChart();
+  
+  // Check if user is already logged in
+  if (authToken) {
+    // For demo purposes, show dashboard
+    document.querySelector('.hero').style.display = 'none';
+    document.querySelector('.features').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    loadDashboardData();
+  }
+  
+  // Setup form event listeners
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  
+  if (loginForm) {
+    loginForm.addEventListener('submit', handleLogin);
+  }
+  
+  if (registerForm) {
+    registerForm.addEventListener('submit', handleRegister);
+  }
+  
+  console.log('Study Buddy initialized successfully!');
+});
+    </script>
+</body>
+</html>
